@@ -5,6 +5,7 @@ It provides an easy to use abstraction over communication protocols:
 
 * HTTP/REST client
 * Seneca client (see http://www.senecajs.org)
+* Direct client for monolythic deployments
 * Null client to be used in testing
 
 <a name="links"></a> Quick Links:
@@ -39,14 +40,14 @@ npm update
 
 Inside your code get the reference to the client SDK
 ```javascript
-var sdk = new require('pip-clients-sessions-node').Version1;
+var sdk = new require('pip-clients-sessions-node');
 ```
 
 Define client configuration parameters that match configuration of the microservice external API
 ```javascript
 // Client configuration
 var config = {
-    endpoint: {
+    connection: {
         protocol: 'http',
         host: 'localhost', 
         port: 8007
@@ -57,10 +58,10 @@ var config = {
 Instantiate the client and open connection to the microservice
 ```javascript
 // Create the client instance
-var client = sdk.SessionsRestClient(config);
+var client = sdk.SessionsHttpClientV1(config);
 
 // Connect to the microservice
-client.open(function(err) {
+client.open(null, function(err) {
     if (err) {
         console.error('Connection to the microservice failed');
         console.error(err);
@@ -77,12 +78,11 @@ Now the client is ready to perform operations
 // Opens user session
 client.openSession(
     null,
-    {
-        id: '123',
-        name: 'Test User'
-    },
+    '123',
+    'Test User',
     '192.168.1.1',
     'Test Client',
+    null,
     null,
     function (err, session) {
         ...
@@ -94,7 +94,8 @@ client.openSession(
 // Get user sessions
 client.getSessions(
     null,
-    '123',
+    null,
+    null,
     function(err, sessions) {
     ...    
     }

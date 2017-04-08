@@ -6,19 +6,18 @@ and provides high-level API to access the microservice for simple and productive
 
 * [Installation](#install)
 * [Getting started](#get_started)
-* [Session class](#class1)
-* [ISessionsClient interface](#interface)
-    - [init()](#operation1)
-    - [open()](#operation2)
-    - [close()](#operation3)
-    - [getSessions()](#operation4)
-    - [loadSession()](#operation5)
-    - [openSession()](#operation6)
-    - [storeSessionData()](#operation7)
-    - [closeSession()](#operation8)
-    - [deleteSession()](#operation9)
-* [SessionsRestClient class](#client_rest)
-* [SessionsSenecaClient class](#client_seneca)
+* [SessionV1 class](#class1)
+* [ISessionsClientV1 interface](#interface)
+    - [getSessions()](#operation1)
+    - [getSessionById()](#operation2)
+    - [openSession()](#operation3)
+    - [storeSessionData()](#operation4)
+    - [closeSession()](#operation5)
+    - [deleteSessionById()](#operation6)
+* [SessionsHttpClientV1 class](#client_http)
+* [SessionsSenecaClientV1 class](#client_seneca)
+* [SessionsDirectClientV1 class](#client_direct)
+* [SessionsNullClientV1 class](#client_null)
 
 ## <a name="install"></a> Installation
 
@@ -29,7 +28,7 @@ To work with the client SDK add dependency into package.json file:
     ...
     "dependencies": {
         ....
-        "pip-clients-sessions-node": "git+ssh://git@github.com:pip-services/pip-clients-sessions-node.git",
+        "pip-clients-sessions-node": "^1.0.*",
         ...
     }
 }
@@ -45,33 +44,28 @@ npm install
 npm update
 ```
 
-If you are using Typescript, add the following type definition where compiler can find it
-```javascript
-/// <reference path="../node_modules/pip-clients-sessions-node/module.d.ts" />
-```
-
 ## <a name="get_started"></a> Getting started
 
 This is a simple example on how to work with the microservice using REST client:
 
 ```javascript
 // Get Client SDK for Version 1 
-var sdk = new require('pip-clients-sessions-node').Version1;
+var sdk = new require('pip-clients-sessions-node');
 
 // Client configuration
 var config = {
-    transport: {
-        type: 'http',
+    connection: {
+        protocol: 'http',
         host: 'localhost', 
         port: 8007
     }
 };
 
 // Create the client instance
-var client = sdk.SessionsRestClient(config);
+var client = sdk.SessionsHttpClientV1(config);
 
 // Open client connection to the microservice
-client.open(function(err) {
+client.open(null, function(err) {
     if (err) {
         console.error(err);
         return; 
@@ -81,12 +75,12 @@ client.open(function(err) {
         
     // Opens user session
     client.openSession(
-        {
-            id: '123',
-            name: 'Test User'
-        },
+        null,
+        '123',
+        'Test User',
         '192.168.1.1',
         'Test Client',
+        null,
         null,
         function (err, session) {
             if (err) {
@@ -100,6 +94,8 @@ client.open(function(err) {
             // Get sessions for user 123
             client.getSessions(
                 '123',
+                null,
+                null,
                 function (err, sessions) {
                     if (err) {
                         console.error(err);
@@ -110,7 +106,7 @@ client.open(function(err) {
                     console.log(sessions);
                     
                     // Close connection
-                    client.close(); 
+                    client.close(null); 
                 }
             );
         }
@@ -118,182 +114,200 @@ client.open(function(err) {
 });
 ```
 
-### <a name="class1"></a> Session class
+### <a name="class1"></a> SessionV1 class
 
 Represents an open user session
 
 **Properties:**
 - id: string - unique session id
-- opened: Date - date and time when session was opened
-- last_request: Date - date and time when last request was processed
+- user_id: string - unique user id
+- user_name: string - Full user name just for information
+- active: boolean - True if session is still active
+- open_time: Date - date and time when session was opened
+- request_time: Date - date and time when last request was processed
+- close_time: Date - date and time when session was closed
 - address: string - client address
 - client: string - client application name
-- platform: string - client OS
 - user: Object - information about user
 - data: Object - session data
 
-## <a name="interface"></a> ISessionsClient interface
+## <a name="interface"></a> ISessionsClientV1 interface
 
-If you are using Typescript, you can use ISessionsClient as a common interface across all client implementations. 
-If you are using plain Javascript, you shall not worry about ISessionsClient interface. You can just expect that
+If you are using Typescript, you can use ISessionsClientV1 as a common interface across all client implementations. 
+If you are using plain Javascript, you shall not worry about ISessionsClientV1 interface. You can just expect that
 all methods defined in this interface are implemented by all client classes.
 
 ```javascript
-interface ISessionsClient {
-    init(refs);
-    open(callback);
-    close(callback);
-    getSessions(userId, callback);
-    openSession(user, address, client, data, callback);
-    loadSession(userId, sessionId, callback);
-    storeSessionData(userId, sessionId, data, callback);
-    closeSession(userId, address, client, callback);
-    deleteSession(userId, sessionId, callback);
+interface ISessionsClientV1 {
+    getSessions(correlationId, userId, callback);
+    openSession(correlationId, user, address, client, data, callback);
+    getSessionById(correlationId, sessionId, callback);
+    storeSessionData(correlationId, sessionId, data, callback);
+    closeSession(correlationId, sessionId, callback);
+    deleteSessionById(correlationId, sessionId, callback);
 }
 ```
 
-### <a name="operation1"></a> init(refs)
+### <a name="operation1"></a> getSessions(correlationId, filter, paging, callback)
 
-Initializes client references. This method is optional. It is used to set references 
-to logger or performance counters.
-
-**Arguments:**
-- refs: References - references to other component 
-  - log: ILog - reference to logger
-  - countes: ICounters - reference to performance counters
-
-### <a name="operation2"></a> open(callback)
-
-Opens connection to the microservice
-
-**Arguments:**
-- callback: (err) => void - callback function
-  - err - Error or null is no error occured
-
-### <a name="operation3"></a> close(callback)
-
-Closes connection to the microservice
-
-**Arguments:**
-- callback: (err) => void - callback function
-  - err - Error or null is no error occured
-
-### <a name="operation4"></a> getSessions(userId, callback)
-
-Retrieves all opened user sessions.
+Retrieves user sessions by specified criteria.
 
 **Arguments:** 
-- userId: string - unique user id
+- correlationId: string - id that uniquely identifies transaction
+- filter: object - filter parameters
+  - user_id: string - (optional) unique user id
+  - active: boolean - (optional) active connections
+  - from_time: Date - (optional) start of the time range
+  - to_time: Date - (optional) end of the time range
+- paging: object - paging parameters
+  - skip: int - (optional) start of page (default: 0)
+  - take: int - (optional) page length (default: 100)
+  - total: boolean - (optional) include total counter into paged result (default: false)
 - callback: (err, sessions) => void - callback function
   - err: Error - occured error or null for success
-  - sessions: [Session] - all opened user sessions
+  - sessions: DataPage<SessionV1> - page with user sessions
 
-### <a name="operation5"></a> loadSession(userId, sessionId, callback)
+### <a name="operation2"></a> getSessionById(correlationId, sessionId, callback)
 
-Load opened user session by user id and session id.
+Loads user session by session id.
 
 **Arguments:** 
-- userId: string - unique user id
+- correlationId: string - id that uniquely identifies transaction
 - sessionId: string - unique session id
 - callback: (err, session) => void - callback function
   - err: Error - occured error or null for success
-  - session: Session - open user session or null if session wasn't found
+  - session: SessionV1 - open user session or null if session wasn't found
 
-### <a name="operation6"></a> openSession(user, address, client, data, callback)
+### <a name="operation3"></a> openSession(correlationId, userId, userName, address, client, user, data, callback)
 
 Opens a new user session and stores user information in it.
 
 **Arguments:** 
-- user: Object - user information
-  - id: string - unique user id
-  - name: string - full user name
-  - ... - other user properties
+- correlationId: string - id that uniquely identifies transaction
+- user_id: string - unique user id
+- user_name: string - full user name
 - address: string - client address
 - client: string - client application name
-- data: Object - (optional) session data
+- user: Object - user data
+- data: Object - session data
 - callback: (err, session) => void - callback function
   - err: Error - occured error or null for success
-  - session: Session - newly opened user session or existing session if it was already opened for the same address and client
+  - session: SessionV1 - newly opened user session or existing session if it was already opened for the same address and client
 
-### <a name="operation7"></a> storeSessionData(userId, sessionId, data, callback)
+### <a name="operation4"></a> storeSessionData(correlationId, sessionId, data, callback)
 
 Stores session data.
 
 **Arguments:** 
-- userId: string - unique user id
+- correlationId: string - id that uniquely identifies transaction
 - sessionId: string - unique session id
 - data: Object - session data
 - callback: (err) => void - callback function
   - err: Error - occured error or null for success
+  - session: SessionV1 - updated session object
 
-### <a name="operation8"></a> closeSession(userId, address, client, callback)
+### <a name="operation5"></a> closeSession(correlationId, sessionId, callback)
 
-Closes previously opened user session from specified host and client application
+Closes user session either by its id
 
 **Arguments:** 
-- userId: string - unique user id
-- address: string - client address
-- client: string - client application name
+- correlationId: string - id that uniquely identifies transaction
+- session_id: (optional) string - unique session id
 - callback: (err) => void - callback function
   - err: Error - occured error or null for success
+  - session: SessionV1 - closed session object
 
-### <a name="operation9"></a> deleteSession(userId, sessionId, callback)
+### <a name="operation6"></a> deleteSessionById(correlationId, sessionId, callback)
 
-Closes session by specified user and session ids.
+Deletes session by specified session ids.
 
 **Arguments:** 
-- userId: string - unique user id
+- correlationId: string - id that uniquely identifies transaction
 - sessionId: string - unique session id
 - callback: (err) => void - callback function
   - err: Error - occured error or null for success
+  - session: SessionV1 - deleted session object
  
-## <a name="client_rest"></a> SessionsRestClient class
+## <a name="client_rest"></a> SessionsHttpClientV1 class
 
-SessionsRestClient is a client that implements HTTP/REST protocol
+SessionsHttpClientV1 is a client that implements HTTP protocol
 
 ```javascript
-class SessionsRestClient extends RestClient implements ISessionsClient {
+class SessionsHttpClientV1 extends CommandableHttpClient implements ISessionsClientV1 {
     constructor(config?: any);
-    init(refs);
-    open(callback);
-    close(callback);
-    getSessions(userId, callback);
-    openSession(user, address, client, data, callback);
-    loadSession(userId, sessionId, callback);
-    storeSessionData(userId, sessionId, data, callback);
-    closeSession(userId, address, client, callback);
-    deleteSession(userId, sessionId, callback);
+    setReferences(references);
+    open(correlationId, callback);
+    close(correlationId, callback);
+    getSessions(correlationId, userId, callback);
+    openSession(correlationId, user, address, client, data, callback);
+    getSessionById(correlationId, sessionId, callback);
+    storeSessionData(correlationId, sessionId, data, callback);
+    closeSession(correlationId, sessionId, callback);
+    deleteSessionById(correlationId, sessionId, callback);
 }
 ```
 
 **Constructor config properties:** 
-- transport: object - HTTP transport configuration options
-  - type: string - HTTP protocol - 'http' or 'https' (default is 'http')
+- connection: object - HTTP transport configuration options
+  - protocol: string - HTTP protocol - 'http' or 'https' (default is 'http')
   - host: string - IP address/hostname binding (default is '0.0.0.0')
   - port: number - HTTP port number
 
-## <a name="client_seneca"></a> SessionsSenecaClient class
+## <a name="client_seneca"></a> SessionsSenecaClientV1 class
 
-SessionsSenecaClient is a client that implements Seneca protocol
+SessionsSenecaClientV1 is a client that implements Seneca protocol
 
 ```javascript
-class SessionsSenecaClient extends SenecaClient implements ISessionsClient {
+class SessionsSenecaClientV1 extends CommandableSenecaClient implements ISessionsClientV1 {
     constructor(config?: any);        
-    init(refs);
-    open(callback);
-    close(callback);
-    getSessions(userId, callback);
-    openSession(user, address, client, data, callback);
-    loadSession(userId, sessionId, callback);
-    storeSessionData(userId, sessionId, data, callback);
-    closeSession(userId, address, client, callback);
-    deleteSession(userId, sessionId, callback);
+    setReferences(references);
+    open(correlationId, callback);
+    close(correlationId, callback);
+    getSessions(correlationId, userId, callback);
+    openSession(correlationId, user, address, client, data, callback);
+    getSessionById(correlationId, sessionId, callback);
+    storeSessionData(correlationId, sessionId, data, callback);
+    closeSession(correlationId, sessionId, callback);
+    deleteSessionById(correlationId, sessionId, callback);
 }
 ```
 
 **Constructor config properties:** 
-- transport: object - (optional) Seneca transport configuration options. See http://senecajs.org/api/ for details.
-  - type: string - Seneca transport type 
+- connection: object - (optional) Seneca transport configuration options. See http://senecajs.org/api/ for details.
+  - protocol: string - Seneca transport type 
   - host: string - IP address/hostname binding (default is '0.0.0.0')
   - port: number - Seneca port number
 
+## <a name="client_direct"></a> SessionsDirectClientV1 class
+
+SessionsDirectClientV1 is a client that implements Seneca protocol
+
+```javascript
+class SessionsDirectClientV1 extends DirectClient implements ISessionsClientV1 {
+    constructor(config?: any);        
+    setReferences(references);
+    open(correlationId, callback);
+    close(correlationId, callback);
+    getSessions(correlationId, userId, callback);
+    openSession(correlationId, user, address, client, data, callback);
+    getSessionById(correlationId, sessionId, callback);
+    storeSessionData(correlationId, sessionId, data, callback);
+    closeSession(correlationId, sessionId, callback);
+    deleteSessionById(correlationId, sessionId, callback);
+}
+```
+
+## <a name="client_null"></a> SessionsNullClientV1 class
+
+SessionsNullClientV1 is a client that implements Seneca protocol
+
+```javascript
+class SessionsNullClientV1 implements ISessionsClientV1 {
+    getSessions(correlationId, userId, callback);
+    openSession(correlationId, user, address, client, data, callback);
+    getSessionById(correlationId, sessionId, callback);
+    storeSessionData(correlationId, sessionId, data, callback);
+    closeSession(correlationId, sessionId, callback);
+    deleteSessionById(correlationId, sessionId, callback);
+}
+```
