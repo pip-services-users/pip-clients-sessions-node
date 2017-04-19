@@ -4,6 +4,6 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./version1"));
-var SessionsFactory_1 = require("./build/SessionsFactory");
-exports.SessionsFactory = SessionsFactory_1.SessionsFactory;
+var SessionsClientFactory_1 = require("./build/SessionsClientFactory");
+exports.SessionsClientFactory = SessionsClientFactory_1.SessionsClientFactory;
 //# sourceMappingURL=index.js.map

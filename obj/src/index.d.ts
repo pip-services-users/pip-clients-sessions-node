@@ -1,2 +1,2 @@
 export * from './version1';
-export { SessionsFactory } from './build/SessionsFactory';
+export { SessionsClientFactory } from './build/SessionsClientFactory';
