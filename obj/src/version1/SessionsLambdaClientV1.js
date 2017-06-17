@@ -35,6 +35,12 @@ class SessionsLambdaClientV1 extends pip_services_aws_node_1.CommandableLambdaCl
             data: data
         }, callback);
     }
+    updateSessionUser(correlationId, sessionId, user, callback) {
+        this.callCommand('update_session_user', correlationId, {
+            session_id: sessionId,
+            user: user
+        }, callback);
+    }
     closeSession(correlationId, sessionId, callback) {
         this.callCommand('close_session', correlationId, {
             session_id: sessionId

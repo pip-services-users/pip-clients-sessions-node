@@ -8,6 +8,7 @@ export declare class SessionsNullClientV1 implements ISessionsClientV1 {
     getSessionById(correlationId: string, sessionId: string, callback: (err: any, session: SessionV1) => void): void;
     openSession(correlationId: string, userId: string, userName: string, address: string, client: string, user: any, data: any, callback: (err: any, session: SessionV1) => void): void;
     storeSessionData(correlationId: string, sessionId: string, data: any, callback: (err: any, session: SessionV1) => void): void;
+    updateSessionUser(correlationId: string, sessionId: string, user: any, callback: (err: any, session: SessionV1) => void): void;
     closeSession(correlationId: string, sessionId: string, callback: (err: any, session: SessionV1) => void): void;
     deleteSessionById(correlationId: string, sessionId: string, callback: (err: any, session: SessionV1) => void): void;
 }

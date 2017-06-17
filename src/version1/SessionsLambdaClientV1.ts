@@ -72,6 +72,19 @@ export class SessionsLambdaClientV1 extends CommandableLambdaClient implements I
             callback
         );
     }
+
+    public updateSessionUser(correlationId: string, sessionId: string, user: any,
+        callback: (err: any, session: SessionV1) => void): void {
+        this.callCommand(
+            'update_session_user',
+            correlationId,
+            {
+                session_id: sessionId,
+                user: user
+            }, 
+            callback
+        );
+    }
     
     public closeSession(correlationId: string, sessionId: string,
         callback: (err: any, session: SessionV1) => void): void {

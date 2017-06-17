@@ -35,6 +35,12 @@ class SessionsHttpClientV1 extends pip_services_net_node_1.CommandableHttpClient
             data: data
         }, callback);
     }
+    updateSessionUser(correlationId, sessionId, user, callback) {
+        this.callCommand('update_session_user', correlationId, {
+            session_id: sessionId,
+            user: user
+        }, callback);
+    }
     closeSession(correlationId, sessionId, callback) {
         this.callCommand('close_session', correlationId, {
             session_id: sessionId

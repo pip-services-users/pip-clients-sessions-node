@@ -18,6 +18,9 @@ class SessionsNullClientV1 {
     storeSessionData(correlationId, sessionId, data, callback) {
         callback(null, null);
     }
+    updateSessionUser(correlationId, sessionId, user, callback) {
+        callback(null, null);
+    }
     closeSession(correlationId, sessionId, callback) {
         callback(null, null);
     }

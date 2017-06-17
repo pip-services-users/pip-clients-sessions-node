@@ -30,6 +30,11 @@ export class SessionsNullClientV1 implements ISessionsClientV1 {
         callback(null, null);
     }
     
+    public updateSessionUser(correlationId: string, sessionId: string, user: any,
+        callback: (err: any, session: SessionV1) => void): void {
+        callback(null, null);
+    }
+    
     public closeSession(correlationId: string, sessionId: string,
         callback: (err: any, session: SessionV1) => void): void {
         callback(null, null);

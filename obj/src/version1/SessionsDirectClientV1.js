@@ -38,6 +38,13 @@ class SessionsDirectClientV1 extends pip_services_net_node_1.DirectClient {
             callback(err, session);
         });
     }
+    updateSessionUser(correlationId, sessionId, user, callback) {
+        let timing = this.instrument(correlationId, 'sessions.update_session_user');
+        this._controller.updateSessionUser(correlationId, sessionId, user, (err, session) => {
+            timing.endTiming();
+            callback(err, session);
+        });
+    }
     closeSession(correlationId, sessionId, callback) {
         let timing = this.instrument(correlationId, 'sessions.close_session');
         this._controller.closeSession(correlationId, sessionId, (err, session) => {

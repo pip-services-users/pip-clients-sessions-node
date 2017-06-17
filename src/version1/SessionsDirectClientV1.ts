@@ -59,6 +59,15 @@ export class SessionsDirectClientV1 extends DirectClient<any> implements ISessio
             callback(err, session);
         });
     }
+
+    public updateSessionUser(correlationId: string, sessionId: string, user: any,
+        callback: (err: any, session: SessionV1) => void): void {
+        let timing = this.instrument(correlationId, 'sessions.update_session_user');
+        this._controller.updateSessionUser(correlationId, sessionId, user, (err, session) => {
+            timing.endTiming();
+            callback(err, session);
+        });
+    }
     
     public closeSession(correlationId: string, sessionId: string,
         callback: (err: any, session: SessionV1) => void): void {

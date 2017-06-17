@@ -57,6 +57,19 @@ export class SessionsClientFixtureV1 {
                     }
                 );
             },
+        // Update session user
+            (callback) => {
+                this._client.updateSessionUser(
+                    null,
+                    session1.id,
+                    'xyz',
+                    (err) => {
+                        assert.isNull(err);
+
+                        callback();
+                    }
+                );
+            },
         // Load created session
             (callback) => {
                 this._client.getSessionById(
