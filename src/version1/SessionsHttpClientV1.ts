@@ -11,7 +11,7 @@ import { ISessionsClientV1 } from './ISessionsClientV1';
 export class SessionsHttpClientV1 extends CommandableHttpClient implements ISessionsClientV1 {
 
     constructor(config?: any) {
-        super('sessions');
+        super('v1/sessions');
 
         if (config != null)
             this.configure(ConfigParams.fromValue(config));
