@@ -1,5 +1,5 @@
 import { Descriptor } from 'pip-services-commons-node';
-import { Factory } from 'pip-services-commons-node';
+import { Factory } from 'pip-services-components-node';
 
 import { SessionsNullClientV1 } from '../version1/SessionsNullClientV1';
 import { SessionsDirectClientV1 } from '../version1/SessionsDirectClientV1';
