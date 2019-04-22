@@ -2,7 +2,7 @@ let _ = require('lodash');
 let async = require('async');
 let assert = require('chai').assert;
 
-import { FilterParams } from 'pip-services-commons-node';
+import { FilterParams } from 'pip-services3-commons-node';
 
 import { ISessionsClientV1 } from '../../src/version1/ISessionsClientV1';
 import { SessionV1 } from '../../src/version1/SessionV1';

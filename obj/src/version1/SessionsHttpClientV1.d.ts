@@ -1,7 +1,7 @@
-import { FilterParams } from 'pip-services-commons-node';
-import { PagingParams } from 'pip-services-commons-node';
-import { DataPage } from 'pip-services-commons-node';
-import { CommandableHttpClient } from 'pip-services-rpc-node';
+import { FilterParams } from 'pip-services3-commons-node';
+import { PagingParams } from 'pip-services3-commons-node';
+import { DataPage } from 'pip-services3-commons-node';
+import { CommandableHttpClient } from 'pip-services3-rpc-node';
 import { SessionV1 } from './SessionV1';
 import { ISessionsClientV1 } from './ISessionsClientV1';
 export declare class SessionsHttpClientV1 extends CommandableHttpClient implements ISessionsClientV1 {

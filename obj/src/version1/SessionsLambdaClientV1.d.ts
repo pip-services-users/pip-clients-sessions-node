@@ -1,7 +1,7 @@
-import { FilterParams } from 'pip-services-commons-node';
-import { PagingParams } from 'pip-services-commons-node';
-import { DataPage } from 'pip-services-commons-node';
-import { CommandableLambdaClient } from 'pip-services-aws-node';
+import { FilterParams } from 'pip-services3-commons-node';
+import { PagingParams } from 'pip-services3-commons-node';
+import { DataPage } from 'pip-services3-commons-node';
+import { CommandableLambdaClient } from 'pip-services3-aws-node';
 import { SessionV1 } from './SessionV1';
 import { ISessionsClientV1 } from './ISessionsClientV1';
 export declare class SessionsLambdaClientV1 extends CommandableLambdaClient implements ISessionsClientV1 {
