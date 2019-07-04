@@ -10,4 +10,6 @@ var SessionsDirectClientV1_1 = require("./SessionsDirectClientV1");
 exports.SessionsDirectClientV1 = SessionsDirectClientV1_1.SessionsDirectClientV1;
 var SessionsNullClientV1_1 = require("./SessionsNullClientV1");
 exports.SessionsNullClientV1 = SessionsNullClientV1_1.SessionsNullClientV1;
+var SessionsMemoryClientV1_1 = require("./SessionsMemoryClientV1");
+exports.SessionsMemoryClientV1 = SessionsMemoryClientV1_1.SessionsMemoryClientV1;
 //# sourceMappingURL=index.js.map
