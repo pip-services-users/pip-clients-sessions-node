@@ -12,4 +12,6 @@ var SessionsNullClientV1_1 = require("./SessionsNullClientV1");
 exports.SessionsNullClientV1 = SessionsNullClientV1_1.SessionsNullClientV1;
 var SessionsMemoryClientV1_1 = require("./SessionsMemoryClientV1");
 exports.SessionsMemoryClientV1 = SessionsMemoryClientV1_1.SessionsMemoryClientV1;
+var SessionsCommandableGrpcClientV1_1 = require("./SessionsCommandableGrpcClientV1");
+exports.SessionsCommandableGrpcClientV1 = SessionsCommandableGrpcClientV1_1.SessionsCommandableGrpcClientV1;
 //# sourceMappingURL=index.js.map

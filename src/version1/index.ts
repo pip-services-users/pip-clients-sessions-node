@@ -5,3 +5,4 @@ export { SessionsLambdaClientV1 } from './SessionsLambdaClientV1';
 export { SessionsDirectClientV1 } from './SessionsDirectClientV1';
 export { SessionsNullClientV1 } from './SessionsNullClientV1';
 export { SessionsMemoryClientV1 } from './SessionsMemoryClientV1';
+export { SessionsCommandableGrpcClientV1 } from './SessionsCommandableGrpcClientV1';

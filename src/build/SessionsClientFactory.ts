@@ -6,6 +6,7 @@ import { SessionsMemoryClientV1 } from '../version1/SessionsMemoryClientV1';
 import { SessionsDirectClientV1 } from '../version1/SessionsDirectClientV1';
 import { SessionsHttpClientV1 } from '../version1/SessionsHttpClientV1';
 import { SessionsLambdaClientV1 } from '../version1/SessionsLambdaClientV1';
+import { SessionsCommandableGrpcClientV1 } from '../version1/SessionsCommandableGrpcClientV1';
 
 export class SessionsClientFactory extends Factory {
 	public static Descriptor: Descriptor = new Descriptor('pip-services-sessions', 'factory', 'default', 'default', '1.0');
@@ -14,6 +15,7 @@ export class SessionsClientFactory extends Factory {
 	public static DirectClientV1Descriptor = new Descriptor('pip-services-sessions', 'client', 'direct', 'default', '1.0');
 	public static HttpClientV1Descriptor = new Descriptor('pip-services-sessions', 'client', 'http', 'default', '1.0');
 	public static LambdaClientV1Descriptor = new Descriptor('pip-services-sessions', 'client', 'lambda', 'default', '1.0');
+	public static CommandableGrpcClientV1Descriptor = new Descriptor('pip-services-sessions', 'client', 'commandable-grpc', 'default', '1.0');
 	
 	constructor() {
 		super();
@@ -23,6 +25,7 @@ export class SessionsClientFactory extends Factory {
 		this.registerAsType(SessionsClientFactory.DirectClientV1Descriptor, SessionsDirectClientV1);
 		this.registerAsType(SessionsClientFactory.HttpClientV1Descriptor, SessionsHttpClientV1);
 		this.registerAsType(SessionsClientFactory.LambdaClientV1Descriptor, SessionsLambdaClientV1);
+		this.registerAsType(SessionsClientFactory.CommandableGrpcClientV1Descriptor, SessionsCommandableGrpcClientV1);
 	}
 	
 }
