@@ -19,6 +19,7 @@ class SessionsClientFactory extends pip_services3_components_node_1.Factory {
         this.registerAsType(SessionsClientFactory.CommandableGrpcClientV1Descriptor, SessionsCommandableGrpcClientV1_1.SessionsCommandableGrpcClientV1);
     }
 }
+exports.SessionsClientFactory = SessionsClientFactory;
 SessionsClientFactory.Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-sessions', 'factory', 'default', 'default', '1.0');
 SessionsClientFactory.NullClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-sessions', 'client', 'null', 'default', '1.0');
 SessionsClientFactory.MemoryClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-sessions', 'client', 'memory', 'default', '1.0');
@@ -26,5 +27,4 @@ SessionsClientFactory.DirectClientV1Descriptor = new pip_services3_commons_node_
 SessionsClientFactory.HttpClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-sessions', 'client', 'http', 'default', '1.0');
 SessionsClientFactory.LambdaClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-sessions', 'client', 'lambda', 'default', '1.0');
 SessionsClientFactory.CommandableGrpcClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-sessions', 'client', 'commandable-grpc', 'default', '1.0');
-exports.SessionsClientFactory = SessionsClientFactory;
 //# sourceMappingURL=SessionsClientFactory.js.map

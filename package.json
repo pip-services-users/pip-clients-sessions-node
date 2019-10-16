@@ -28,7 +28,7 @@
     "engines": {
         "node": ">=0.6.14"
     },
-    "private": true,
+    "private": false,
     "scripts": {
         "build": "tsc",
         "watch": "tsc --watch",
@@ -59,6 +59,6 @@
         "chai": "*",
         "mocha": "*",
         "aws-sdk": "*",
-        "pip-services-sessions-node": "git+ssh://git@github.com:pip-services-users/pip-services-sessions-node.git"
+        "pip-services-sessions-node": "^1.0.1"
     }
 }
