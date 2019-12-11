@@ -1,6 +1,6 @@
 {
     "name": "pip-clients-sessions-node",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "author": "Conceptual Vision Consulting LLC",
     "description": "Node.js client sdk for pip-services-sessions microservice",
     "contributors": [
@@ -53,12 +53,9 @@
         "@types/async": "^2.0.0",
         "@types/chai": "*",
         "@types/mocha": "*",
-        "@types/mongodb": "^2.1.38",
-        "@types/mongoose": "^4.7.4",
         "restify": "^4.3.0",
         "chai": "*",
         "mocha": "*",
-        "aws-sdk": "*",
-        "pip-services-sessions-node": "^1.0.1"
+        "pip-services-sessions-node": "^1.1.0"
     }
 }
